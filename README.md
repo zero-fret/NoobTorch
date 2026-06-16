@@ -1,2 +1,15 @@
 # NoobTorch
-PyTorch for Noobs, Ultralytics Tuners and Every AI Chaser
+**PyTorch** for **Noobs**, Ultralytics Tuners and Everyone who thinks **AI** is cool. Simple, minimum and *extremely noob-friendly*.
+- This repository is released under the **GNU GPLv3** license.
+- **Note for non-English readers**: Let an LLM do the translation.
+## From n00b to 1337
+**The Roadmap**
+
+| Lesson | Topic | What you will learn |
+|--------|-------|---------------------|
+| 00 | Hello World | Noob's kit for ML, PyTorch and `.backward()` |
+| 01 | MNIST FC | Fully Connected Layer, your 1st model that works |
+| 02 | MNIST CNN | Convolution is a window that slides |
+| 03 | MNIST Advanced | Save Parameters: Max Pooling, Coordinates and Scheduler |
+| 04 | CIFAR ResNet18 | Residual Net is a smart shortcut link |
+| 05 | YOLO | Draw a box by looking only once |

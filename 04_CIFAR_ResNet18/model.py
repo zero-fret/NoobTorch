@@ -4,7 +4,6 @@ import torch.nn.functional as F
 
 
 class ResidualBlock(nn.Module):
-
     def __init__(self, in_channels, out_channels, stride=1):
         super(ResidualBlock, self).__init__()
         
@@ -54,18 +53,22 @@ class ResNet18_CoordConv(nn.Module):
         return nn.Sequential(*layers)
     
     def add_coords(self, x):
-        """给输入添加两个坐标通道"""
         batch, _, H, W = x.shape
         
+        # [-1, 1]
         y_coords = torch.linspace(-1, 1, steps=H, device=x.device)
         y_coords = y_coords.view(1, 1, H, 1).expand(batch, 1, H, W)
+        
+        # [-1, 1]
         x_coords = torch.linspace(-1, 1, steps=W, device=x.device)
         x_coords = x_coords.view(1, 1, 1, W).expand(batch, 1, H, W)
         
+
         return torch.cat([x, y_coords, x_coords], dim=1)
     
     def forward(self, x):
-        x = self.add_coords(x) 
+
+        x = self.add_coords(x)  # [B, 3, 32, 32] → [B, 5, 32, 32]
         x = F.relu(self.bn1(self.conv1(x)))
         x = self.layer1(x)
         x = self.layer2(x)
@@ -77,12 +80,13 @@ class ResNet18_CoordConv(nn.Module):
         return x
 
 
+
 if __name__ == '__main__':
     model = ResNet18_CoordConv(num_classes=10)
     x = torch.randn(1, 3, 32, 32) 
     y = model(x)
-    print(f"输入形状: [1, 3, 32, 32]")
-    print(f"输出形状: {y.shape}")  # [1, 10]
+    print(f" {y.shape}")  # [1, 10]
     
     total_params = sum(p.numel() for p in model.parameters())
-    print(f"总参数量: {total_params:,}")
+    print(f"{total_params:,}")
+   

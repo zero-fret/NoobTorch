@@ -25,7 +25,7 @@ def set_seed(seed=42):
     torch.backends.cudnn.benchmark = False
 set_seed(1337)
 
-# -------------------- ① 检测 GPU --------------------
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print(f'Using device: {device}')
 
@@ -73,7 +73,7 @@ optimizer = optim.SGD(model.parameters(),
 
 scheduler = lr_scheduler.CosineAnnealingLR(optimizer, T_max=EPOCHS)
 
-# -------------------- 训练 --------------------
+
 def train():
     model.train()
     for epoch in range(EPOCHS):

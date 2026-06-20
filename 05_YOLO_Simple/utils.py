@@ -22,13 +22,12 @@ class CircleDataset(Dataset):
         img_path = os.path.join(self.img_dir, img_name)
         label_path = os.path.join(self.label_dir, img_name.replace('.png', '.txt'))
 
-        # 读取图像并归一化
         img = cv2.imread(img_path)
         img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
         img = img.astype(np.float32) / 255.0
         img = torch.from_numpy(img).permute(2, 0, 1)   # (C, H, W)
 
-        # 读取标签（每个图片只有一个目标）
+
         target = torch.zeros((5, S, S), dtype=torch.float32)
         mask = torch.zeros((S, S), dtype=torch.bool)
         with open(label_path, 'r') as f:
@@ -59,7 +58,6 @@ class CircleDataset(Dataset):
 
 
 def decode_predictions(output, S, conf_thresh, img_size=640):
-    """解码网络输出为边界框列表（像素坐标）"""
     output = output.squeeze(0)          # (5, S, S)
     tx = torch.sigmoid(output[0])       # (S, S)
     ty = torch.sigmoid(output[1])
@@ -84,7 +82,6 @@ def decode_predictions(output, S, conf_thresh, img_size=640):
 
 
 def box_iou(box1, box2):
-    """两个框的 IoU（每个框 [x1,y1,x2,y2]）"""
     x1 = max(box1[0], box2[0])
     y1 = max(box1[1], box2[1])
     x2 = min(box1[2], box2[2])
@@ -97,7 +94,6 @@ def box_iou(box1, box2):
 
 
 def nms(boxes, iou_thresh):
-    """非极大值抑制，返回过滤后的框列表"""
     if not boxes:
         return []
     boxes = sorted(boxes, key=lambda x: x[4], reverse=True)
@@ -110,14 +106,12 @@ def nms(boxes, iou_thresh):
 
 def compute_ap(predictions, groundtruths, iou_thresh=0.5):
 
-    # 只处理class 0
     class_preds = [p for p in predictions if p[3] == 0]
     class_gts = [g for g in groundtruths if g[2] == 0]
     
     if not class_gts or not class_preds:
         return 0.0
-    
-    # 按置信度降序排列
+
     class_preds = sorted(class_preds, key=lambda x: x[2], reverse=True)
     gt_matched = {i: False for i in range(len(class_gts))}
     tp, fp = [], []
@@ -150,9 +144,7 @@ def compute_ap(predictions, groundtruths, iou_thresh=0.5):
     fp_cum = np.cumsum(fp)
     precisions = tp_cum / (tp_cum + fp_cum + 1e-6)
     recalls = tp_cum / len(class_gts)
-    
-    # 非插值AP：直接数值积分（梯形法则）
-    # 确保至少有两个点，否则返回0
+
     if len(precisions) < 2:
         return precisions[0] if len(precisions) == 1 else 0.0
     
@@ -161,5 +153,4 @@ def compute_ap(predictions, groundtruths, iou_thresh=0.5):
 
 
 def compute_map(predictions, groundtruths, iou_thresh=0.5, num_classes=1):
-    # 为简单起见，只处理单类别（class 0）
     return compute_ap(predictions, groundtruths, iou_thresh)

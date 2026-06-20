@@ -22,10 +22,6 @@ def train():
 
     model = SimpleYOLO(S=S_grid).to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr)
-    
-    # 添加余弦退火学习率调度器
-    # T_max: 最大迭代次数（epoch总数）
-    # eta_min: 最小学习率（默认为0）
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs, eta_min=1e-5)
 
     mse_loss = nn.MSELoss(reduction='none')
@@ -45,7 +41,6 @@ def train():
 
             outputs = model(imgs)   # (B, 5, S, S)
 
-            # 拆分预测
             pred_tx = torch.sigmoid(outputs[:, 0:1, :, :])
             pred_ty = torch.sigmoid(outputs[:, 1:2, :, :])
             pred_tw = torch.sigmoid(outputs[:, 2:3, :, :])
@@ -58,14 +53,12 @@ def train():
             target_th = targets[:, 3:4, :, :]
             target_conf = targets[:, 4:5, :, :]
 
-            # 坐标损失（仅正样本网格）
             loss_xy = mse_loss(pred_tx, target_tx) + mse_loss(pred_ty, target_ty)
             loss_wh = mse_loss(pred_tw, target_tw) + mse_loss(pred_th, target_th)
             loss_coord = loss_xy + loss_wh
             mask = masks.unsqueeze(1)   # (B,1,S,S)
             loss_coord = (loss_coord * mask.float()).sum() / (mask.sum() + 1e-6) * coord_weight
 
-            # 置信度损失（正负样本加权）
             loss_conf = bce_loss(pred_conf_logits, target_conf)
             weight = torch.ones_like(target_conf) * noobj_weight
             weight = weight * (1 - target_conf) + target_conf * conf_weight
@@ -77,15 +70,13 @@ def train():
             loss.backward()
             optimizer.step()
             total_loss += loss.item()
-        
-        # 在每个epoch结束后更新学习率
+
         scheduler.step()
         current_lr = scheduler.get_last_lr()[0]
 
         avg_loss = total_loss / len(train_loader)
         print(f"Epoch {epoch+1}/{epochs}, Loss: {(avg_loss*100):.4f}, LR: {current_lr:.6f}")
 
-        # 每 10 个 epoch 验证一次
         if (epoch + 1) % 10 == 0:
             model.eval()
             val_loss = 0.0

@@ -10,6 +10,7 @@
 | 00 | Hello World | Noob's kit for ML, PyTorch and `.backward()` |
 | 01 | MNIST FC | Fully Connected Layer, your 1st model that works |
 | 02 | MNIST CNN | Convolution is a window that slides |
-| 03 | MNIST Advanced | Save Parameters: Max Pooling, Coordinates and Scheduler |
+| 03 | CoordConv | Add coordinates for positional awareness |
 | 04 | CIFAR ResNet18 | Residual Net is a smart shortcut link |
 | 05 | YOLO | Draw a box by looking only once |
+| 06 | YOLO DSC | Split and merge to be lighter and faster |

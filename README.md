@@ -1,5 +1,8 @@
 # NoobTorch
-**PyTorch Walkthrough** for **Noobs**, Ultralytics Tuners and Everyone who thinks **AI** is cool. Simple, minimum and *extremely noob-friendly*.  
+**PyTorch Walkthrough** for **Noobs**, Ultralytics Tuners and Everyone who thinks **AI** is cool.  
+- Simple
+- Minimum
+- *extremely noob-friendly*.  
 Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** code and **intuitive** description to help beginners start developing AI with PyTorch as quickly as possible. *At least you will no longer be afraid of it*
 - This repository is released under the **GNU GPLv3** license.
 - **Note for non-English readers**: Let an LLM do the translation.

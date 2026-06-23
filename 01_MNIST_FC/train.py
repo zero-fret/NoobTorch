@@ -11,7 +11,7 @@ from model import SimpleNet
 # ========== HYPERPARAMETERS (settings we choose before training) ==========
 BATCH_SIZE = 64          # Number of images processed together in one step
 LEARNING_RATE = 0.001    # How big of a step the optimizer takes when learning
-EPOCHS = 5              # Number of complete passes through the training data
+EPOCHS = 10              # Number of complete passes through the training data
 
 
 def set_seed(seed=1337):

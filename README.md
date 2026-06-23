@@ -15,7 +15,7 @@ Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** c
 - **Note for non-English readers**: Let an LLM do the translation.
 ## From `n00b` to `1337`
 **The Roadmap**
-
+input: `n00b`  
 | Lesson | Topic | What you will learn |
 |--------|-------|---------------------|
 | 00 | Hello World | Noob's kit for ML, PyTorch and `.backward()` |
@@ -25,3 +25,4 @@ Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** c
 | 04 | CIFAR ResNet18 | Residual Net is a smart shortcut link |
 | 05 | YOLO | Draw a box by looking only once |
 | 06 | YOLO DSC | Split and merge to be lighter and faster |
+output: `1337`

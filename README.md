@@ -14,8 +14,9 @@ Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** c
 - This repository is released under the **GNU GPLv3** license.
 - **Note for non-English readers**: Let an LLM do the translation.
 ## From `n00b` to `1337`
-**The Roadmap**  
+
 Enter as: `n00b`  
+
 | Lesson | Topic | What you will learn |
 |--------|-------|---------------------|
 | 00 | Hello World | Noob's kit for ML, PyTorch and `.backward()` |
@@ -25,4 +26,5 @@ Enter as: `n00b`
 | 04 | CIFAR ResNet18 | Residual Net is a smart shortcut link |
 | 05 | YOLO | Draw a box by looking only once |
 | 06 | YOLO Depthwise | Split and merge to be lighter and faster |
+
 Leave as: `1337`

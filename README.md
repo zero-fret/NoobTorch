@@ -15,7 +15,7 @@ Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** c
 - **Note for non-English readers**: Let an LLM do the translation.
 ## From `n00b` to `1337`
 
-Enter as: `n00b`  
+### Enter as: `n00b`  
 
 | Lesson | Topic | What you will learn |
 |--------|-------|---------------------|
@@ -27,4 +27,4 @@ Enter as: `n00b`
 | 05 | YOLO | Draw a box by looking only once |
 | 06 | YOLO Depthwise | Split and merge to be lighter and faster |
 
-Leave as: `1337`
+### Leave as: `1337`

@@ -7,6 +7,7 @@
 This course welcomes:
 - Noob
 - Trend follower
+- Parameter tuner
 - Anyone who has no access to professional ML courses for some reason
 
 Knowledge required: 

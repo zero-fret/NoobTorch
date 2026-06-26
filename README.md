@@ -4,6 +4,11 @@
 - Minimum
 - *extremely noob-friendly*
 
+This course welcomes:
+- Noob
+- Trend follower
+- Anyone who has no access to professional ML courses for some reason
+
 Knowledge required: 
 - Math: High school + `∂x/∂y`
 - Programming: Can read Python

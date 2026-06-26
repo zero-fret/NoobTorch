@@ -2,6 +2,7 @@
 - Minimum knowledge for a Neural Network that works
 ## Machine Learning Basics
 ### Model
+- **Network**: Can be understood as multi-input multi-output function doing certain behavior
 - **Fully connected layer**: Every input node is connected to every output node
 - **Activation function**: A nonlinear function. a model needs nonlinearity to reason, otherwise it’s just a linear transformation. Example: ReLU, y = max(x, 0)
 - **Initialization** : setting initial values for model weights and biases before training. Proper initialization helps the model converge efficiently.

@@ -5,7 +5,7 @@ This lesson demonstrates the application of **Depthwise Separable Convolution** 
 Depthwise Separable Convolution is a key **efficiency technique** used in modern YOLO variants (like YOLOv5, YOLOv8) to **reduce model size and computational cost** while maintaining detection performance.  
 It factorizes a standard convolution into two separate operations:  
 1. Depthwise Convolution (Split)
-- Applies a **single filter per input channel** =
+- Applies a **single filter per input channel**
 - Preserves spatial dimensions but does NOT combine channels
 - Parameters: `kernel_size² × in_channels`
 - Example: For 3×3 kernel, 32 input channels → 3×3×32 = 288 parameters

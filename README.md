@@ -9,7 +9,9 @@ Knowledge required:
 - Programming: Can read Python
 - But a `Data Structures & Algorithms` is favored
 
-Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** code and **intuitive** description to help beginners start developing deep learning models with PyTorch as quickly as possible. *At least you will no longer be afraid of it*
+Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** code and **intuitive** description to help beginners start developing deep learning models with PyTorch as quickly as possible. 
+*At least you will no longer be afraid of it*
+*And deep learning articles will become truly readable*
 
 - This repository is released under the **GNU GPLv3** license.
 - **Note for non-English readers**: Let an LLM do the translation.

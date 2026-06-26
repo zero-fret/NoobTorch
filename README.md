@@ -11,13 +11,13 @@ Knowledge required:
 
 Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** code and **intuitive** description to help beginners start developing deep learning models with PyTorch as quickly as possible. 
 *At least you will no longer be afraid of it*  
-*And deep learning articles will become truly readable*
+*And deep learning articles will become readable*  
+
 
 - This repository is released under the **GNU GPLv3** license.
 - **Note for non-English readers**: Let an LLM do the translation.
-## From `n00b` to `1337`
 
-### Enter as: `n00b`  
+## From `n00b` to `1337`
 
 | Lesson | Topic | What you will learn |
 |--------|-------|---------------------|
@@ -29,4 +29,12 @@ Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** c
 | 05 | YOLO | Draw a box by looking only once |
 | 06 | YOLO Depthwise | Split and merge to be lighter and faster |
 
-### Leave as: `1337`
+### Enter as: `n00b`  
+### Leave as: 
+
+| Level | Description                                   |
+|-------|-----------------------------------------------|
+| 1337  | Develop model to solve specific problem       |
+| Good  | Optimize existing model for better performance |
+| Medium | Understand code and structure                 |
+| Still N00b | Can't even make it run              |

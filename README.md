@@ -29,6 +29,9 @@ Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** c
 | 05 | YOLO | Draw a box by looking only once |
 | 06 | YOLO Depthwise | Split and merge to be lighter and faster |
 
+Tip: Jump to the level that matches your current skill.  
+If you are already 1337, skip the entire course. It's not designed for you.
+
 ### Enter as: `n00b`  
 ### Leave as: 
 

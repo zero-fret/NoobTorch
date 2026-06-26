@@ -28,14 +28,20 @@ project/
 ```
 
 ## Grid-Based Detection
-- Image divided into S×S grid (S=20)
-- Each grid cell predicts one bounding box
-- Only grid cells containing object center are "positive" samples
+- 640*640 Image downsampled into S×S grid (S=20), an S×S feature map with high number of channels
+- Each grid cell (all channels in the specific pixel) predicts one bounding box
+- Only grid cells containing object center are "positive" samples  
+
+This is True for SimpleYOLO only, *the noobest YOLO possible*. Modern real-world YOLO detectors implement more advanced techniques. Ask an LLM if you are curious.
 
 ## Encoding/Decoding
 - **tx, ty**: Offset within grid cell (0-1), decoded as `cx = (grid_x + tx) / S * IMG_SIZE`
 - **tw, th**: Relative size, decoded as `w = tw * IMG_SIZE`, `h = th * IMG_SIZE`
 - **conf**: Confidence that object exists in this grid cell
+
+## Batch Normalization
+`BatchNorm2d` normalizes data into variance=1 then applies a learnable scale (γ) and shift (β). It lets you train deeper CNNs much faster, with higher learning rates, less careful tuning, and often without needing Dropout by ensuring every layer receives consistently scaled inputs.  
+It needs a higher batch size (>= 8) to work perfectly.
 
 ## Model Structure
 

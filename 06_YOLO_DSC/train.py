@@ -5,8 +5,32 @@ import torch.optim as optim
 from torch.utils.data import DataLoader
 from utils import CircleDataset, S
 from model import SimpleYOLO_DSConv
-
+import random
+import numpy as np
 os.chdir(os.path.dirname(os.path.abspath(__file__)))
+
+def set_seed(seed=1337):
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+def focal_loss(pred, target, alpha=0.25, gamma=2.0, eps=1e-8):
+    """
+    Focal Loss for binary classification.
+    pred: logits (B, 1, S, S)
+    target: binary labels (B, 1, S, S), values 0 or 1
+    """
+    p = torch.sigmoid(pred)
+    pt = p * target + (1 - p) * (1 - target)   # p_t
+    focal_weight = (1 - pt) ** gamma
+    ce = -torch.log(pt + eps)
+    alpha_t = alpha * target + (1 - alpha) * (1 - target)
+    loss = alpha_t * focal_weight * ce
+    return loss
 
 def train():
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -22,15 +46,10 @@ def train():
 
     model = SimpleYOLO_DSConv(S=S_grid).to(device)
     optimizer = optim.Adam(model.parameters(), lr=lr)
-
     scheduler = optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=epochs, eta_min=1e-4)
 
     mse_loss = nn.MSELoss(reduction='none')
-    bce_loss = nn.BCEWithLogitsLoss(reduction='none')
-
-    coord_weight = 5.0
-    conf_weight = 1.0
-    noobj_weight = 0.5
+    coord_weight = 5.0   # Keep this to balance box vs. confidence
 
     for epoch in range(epochs):
         model.train()
@@ -54,17 +73,16 @@ def train():
             target_th = targets[:, 3:4, :, :]
             target_conf = targets[:, 4:5, :, :]
 
-
+            # Coordinate loss
             loss_xy = mse_loss(pred_tx, target_tx) + mse_loss(pred_ty, target_ty)
             loss_wh = mse_loss(pred_tw, target_tw) + mse_loss(pred_th, target_th)
             loss_coord = loss_xy + loss_wh
             mask = masks.unsqueeze(1)   # (B,1,S,S)
             loss_coord = (loss_coord * mask.float()).sum() / (mask.sum() + 1e-6) * coord_weight
 
-            loss_conf = bce_loss(pred_conf_logits, target_conf)
-            weight = torch.ones_like(target_conf) * noobj_weight
-            weight = weight * (1 - target_conf) + target_conf * conf_weight
-            loss_conf = (loss_conf * weight).sum() / (weight.sum() + 1e-6)
+            # Confidence loss with Focal Loss – no manual weighting, just mean reduction
+            loss_focal = focal_loss(pred_conf_logits, target_conf, alpha=0.25, gamma=2.0)
+            loss_conf = loss_focal.mean()   # average over all grid cells
 
             loss = loss_coord + loss_conf
 
@@ -72,14 +90,11 @@ def train():
             loss.backward()
             optimizer.step()
             total_loss += loss.item()
-        
 
         scheduler.step()
         current_lr = scheduler.get_last_lr()[0]
-
         avg_loss = total_loss / len(train_loader)
         print(f"Epoch {epoch+1}/{epochs}, Loss: {(avg_loss*100):.4f}, LR: {current_lr:.6f}")
-
 
         if (epoch + 1) % 10 == 0:
             model.eval()
@@ -107,12 +122,10 @@ def train():
                     loss_wh = mse_loss(pred_tw, target_tw) + mse_loss(pred_th, target_th)
                     loss_coord = loss_xy + loss_wh
                     mask = masks.unsqueeze(1)
-                    loss_coord = (loss_coord * mask.float()).sum() / (mask.sum() + 1e-5) * coord_weight
+                    loss_coord = (loss_coord * mask.float()).sum() / (mask.sum() + 1e-6) * coord_weight
 
-                    loss_conf = bce_loss(pred_conf_logits, target_conf)
-                    weight = torch.ones_like(target_conf) * noobj_weight
-                    weight = weight * (1 - target_conf) + target_conf * conf_weight
-                    loss_conf = (loss_conf * weight).sum() / (weight.sum() + 1e-6)
+                    loss_focal = focal_loss(pred_conf_logits, target_conf, alpha=0.25, gamma=2.0)
+                    loss_conf = loss_focal.mean()
 
                     val_loss += (loss_coord + loss_conf).item()
             val_loss_avg = val_loss / len(val_loader)
@@ -122,4 +135,5 @@ def train():
     print("Model saved as model.pth")
 
 if __name__ == '__main__':
+    set_seed(seed=1337)
     train()

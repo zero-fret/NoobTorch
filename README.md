@@ -17,7 +17,7 @@ Knowledge required:
 
 Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** code and **intuitive** description to help beginners start developing deep learning models with PyTorch as quickly as possible.  
 *At least you will no longer be afraid of it*  
-*And deep learning articles will become readable*  
+*And papers will no longer look like random chars*  
 
 
 - This repository is released under the **GNU GPLv3** license.

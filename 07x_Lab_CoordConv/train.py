@@ -1,5 +1,6 @@
-import sys, os, argparse
+import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 import torch.nn as nn
 import torch.optim as optim
@@ -7,14 +8,10 @@ from torch.optim import lr_scheduler
 from common import set_seed, get_device, get_mnist_loaders, fit, evaluate
 from model import CoordCNN
 
-# The two experimental variables. Keep everything else fixed.
-parser = argparse.ArgumentParser()
-parser.add_argument('--coords', action='store_true',
-                    help='enable coordinate channels (treatment); omit for control')
-parser.add_argument('--activation', default='leaky_relu', choices=['relu', 'leaky_relu'])
-_args = parser.parse_args()
-USE_COORDS = _args.coords       # True = CoordConv, False = control
-ACTIVATION = _args.activation   # 'relu' or 'leaky_relu'
+# The two experimental variables. Edit these lines, then rerun:
+#   run once with USE_COORDS=False, once with USE_COORDS=True, compare.
+USE_COORDS = False        # True = CoordConv (treatment), False = control
+ACTIVATION = 'leaky_relu' # 'relu' or 'leaky_relu'
 
 BATCH_SIZE = 64
 EPOCHS = 15

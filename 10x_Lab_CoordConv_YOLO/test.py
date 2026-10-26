@@ -1,5 +1,4 @@
 import os
-import argparse
 import cv2
 import torch
 import numpy as np
@@ -9,10 +8,9 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 from utils import CircleDataset, S, IMG_SIZE, decode_predictions, nms, compute_ap, decode_gt
 from model import SimpleYOLO_DSConv_Coord
 
-# Omit --coords to test the control, pass --coords to test the treatment.
-parser = argparse.ArgumentParser()
-parser.add_argument('--coords', action='store_true')
-USE_COORDS = parser.parse_args().coords
+# Set this to match the weights you want to evaluate:
+#   False -> control (model_coords_False.pth), True -> treatment (model_coords_True.pth)
+USE_COORDS = False
 WEIGHTS = f"model_coords_{USE_COORDS}.pth"
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')

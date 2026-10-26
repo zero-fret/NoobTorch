@@ -23,7 +23,9 @@ Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** c
 ```bash
 pip install -r requirements.txt
 ```
-Run each script from inside its lesson folder (`python train.py`). MNIST/CIFAR download once into a shared `data/` folder.
+Then **double-click the `.py` file you want to run**, inside its lesson folder —
+no terminal, no `cd`, no arguments. Every script finds its own folder and the
+shared `data/` automatically. MNIST/CIFAR download once into `data/` on first run.
 
 ## Detection backgrounds (COCO)
 Lessons 09, 10 and 10x draw synthetic circles on top of real COCO photos so the
@@ -42,12 +44,14 @@ download them yourself (CC BY 4.0; credit the COCO consortium).
    leave them nested under a `val2017/` folder). The generator also accepts a
    lesson-local `background/` folder.
 
-3. Generate the detection dataset for each lesson:
-   ```bash
-   cd 09_YOLO_Simple && python dataset_generator.py
-   cd ../10_YOLO_DSC && python dataset_generator.py
-   cd ../10x_Lab_CoordConv_YOLO && python dataset_generator.py
-   ```
+3. Generate the detection dataset for each lesson by double-clicking, in order:
+   - `09_YOLO_Simple/dataset_generator.py`
+   - `10_YOLO_DSC/dataset_generator.py`
+   - `10x_Lab_CoordConv_YOLO/dataset_generator.py`
+
+   Then double-click `train.py` in each lesson. For the 07x/10x CoordConv labs,
+   double-click `train.py` for the control and `train_coords.py` for the treatment
+   (and `test.py` / `test_coords.py` for 10x).
 
 ## From `n00b` to `1337`
 

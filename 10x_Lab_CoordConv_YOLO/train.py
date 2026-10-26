@@ -1,5 +1,4 @@
 import os
-import argparse
 import random
 import numpy as np
 import torch
@@ -15,6 +14,10 @@ BATCH = 32
 EPOCHS = 60
 LR = 0.001
 COORD_W = 10.0
+# Toggle this line, then rerun once per arm:
+#   USE_COORDS=False -> control, USE_COORDS=True -> treatment.
+# Weights save to model_coords_False.pth / model_coords_True.pth.
+USE_COORDS = False
 
 
 def forward_loss(model, mse, imgs, targets, masks):
@@ -106,8 +109,4 @@ def main(use_coords):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--coords', action='store_true',
-                        help='enable coordinate channels (treatment); omit for control')
-    args = parser.parse_args()
-    main(args.coords)
+    main(USE_COORDS)

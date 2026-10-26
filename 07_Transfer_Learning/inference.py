@@ -1,11 +1,12 @@
 """Load a trained model and run it on data -- the thing deployment actually is.
 
-Usage:
-    python inference.py                 # classify the first CIFAR test image
-    python inference.py --image cat.jpg # classify your own image
+Edit the two constants below:
+    IMAGE_PATH = None   -> classify the first CIFAR test image
+    IMAGE_PATH = 'cat.jpg' -> classify your own image
 """
-import sys, os, argparse
+import sys, os
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+os.chdir(os.path.dirname(os.path.abspath(__file__)))
 
 import torch
 import torchvision
@@ -13,6 +14,10 @@ from torchvision.models import resnet18
 from torchvision import transforms
 from PIL import Image
 from common.data import IMAGENET_MEAN, IMAGENET_STD, DATA_ROOT
+
+# Point this at your own image, or leave None to classify a CIFAR test image.
+IMAGE_PATH = None
+WEIGHTS_PATH = 'cifar10_resnet18.pth'   # or 'cifar10_resnet18_finetuned.pth'
 
 CLASSES = ['airplane', 'automobile', 'bird', 'cat', 'deer',
            'dog', 'frog', 'horse', 'ship', 'truck']
@@ -42,15 +47,10 @@ def predict(model, pil_image):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser()
-    parser.add_argument('--image', type=str, default=None, help='path to an image')
-    parser.add_argument('--weights', type=str, default='cifar10_resnet18.pth')
-    args = parser.parse_args()
+    model = build_model(WEIGHTS_PATH)
 
-    model = build_model(args.weights)
-
-    if args.image is not None:
-        img = Image.open(args.image)
+    if IMAGE_PATH is not None:
+        img = Image.open(IMAGE_PATH)
     else:
         test_ds = torchvision.datasets.CIFAR10(
             DATA_ROOT, train=False, download=True)

@@ -1,0 +1,40 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+
+# Data (shared download/generated location)
+data/
+*.zip
+*.tar.gz
+*.7z
+
+# COCO background photos (download yourself — see README "Detection backgrounds")
+assets/
+
+# Generated model artifacts and visuals
+*.pth
+test_result/
+results.png
+*.lnk
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# System
+.DS_Store
+Thumbs.db
+*.log
+*.out
+
+# Jupyter
+.ipynb_checkpoints/

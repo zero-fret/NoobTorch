@@ -66,7 +66,7 @@ download them yourself (CC BY 4.0; credit the COCO consortium).
 | 09 | Simple YOLO | a grid detector + coordinate/objectness loss |
 | 10 | YOLO Depthwise | split-merge conv for a smaller, faster net |
 | 10x | Lab: CoordConv Detector | same experiment, now on detection *(optional)* |
-| 11 | Capstone | bring your own data: label, train, evaluate, ship |
+
 
 Tip: Jump to the level that matches your current skill.  
 If you are already 1337, skip the entire course. It's not designed for you.

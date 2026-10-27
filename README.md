@@ -19,10 +19,10 @@ Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** c
 *At least you will no longer be afraid of it*  
 *And papers will no longer look like random chars*
 
-This course does **not** try to teach you everything — deep learning moves too fast
+This course does **not** try to teach you everything. Deep learning moves too fast
 for any single course to cover. What it gives you is the habit and the foundation:
-read the code, change one number, run it, and see what happens. After that, a new
-paper, a new architecture, or a new loss is just another thing to poke at — not a
+read the code, understand how it works, run and see what happens. After that, a new
+paper, a new architecture, or a new loss is just another chapter, not a
 wall you can't get past. You won't finish this course knowing it all; you'll finish
 knowing **how to learn the rest on your own**.
 

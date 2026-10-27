@@ -11,21 +11,22 @@ python train.py --coords   # treatment: 2 coordinate channels at the input
 
 The flag is the single switch; everything else (seed, epochs, LR, loss, data, thresholds) is fixed.
 
-### Fair initialization (important)
-Adding two input channels changes the shape of the first convolution, which would normally
-shift the RNG initialization for every later layer and confound the comparison. `train.py`
-therefore builds the control model first with the fixed seed, then builds the treatment,
-copies the shared weights verbatim, and **zero-initializes only the two new coordinate
-channels**. At step 0 the two networks are identical; the coordinate channels are the only
-difference, so they are a clean single variable.
+### How the comparison is kept fair
+Adding two input channels changes the shape of the first convolution, so the two
+models would otherwise start from different weights. `train.py` builds the control
+model first with the fixed seed, then copies its shared weights into the treatment and
+**zero-initializes only the two new coordinate channels**. At step 0 the two networks
+are identical; the coordinate channels are the only difference, so they are a clean
+single variable.
 
 ## Hypothesis
 Detection predicts **positions**, so explicit coordinates could plausibly help more than they did for classification. But a convolutional detector is already built to localize, and the extra channels may add little or bias toward where objects usually appear. **Measure it.**
 
 ## Protocol
-1. Run `python dataset_generator.py` once (shared data).
-2. `python train.py` (control) → `python test.py`. Record AP.
-3. `python train.py --coords` (treatment) → repeat. Weights are saved as `model_coords_False.pth` / `model_coords_True.pth`.
+1. Double-click `dataset_generator.py` once (shared data).
+2. Double-click `train.py` (control), then `test.py`. Record AP.
+3. Double-click `train_coords.py` (treatment), then `test_coords.py`. Weights are
+   saved as `model_coords_False.pth` / `model_coords_True.pth`.
 4. Repeat both at 2–3 seeds before trusting the difference.
 
 | Run | coords | AP@0.5 | mAP@0.5:0.95 | params |

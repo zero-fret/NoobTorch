@@ -3,7 +3,8 @@
 Every lesson was actually trained end-to-end on an **NVIDIA RTX 4050 Laptop GPU**
 (CUDA 12.4, torch 2.5.1, Python 3.12) — not smoke-tested. The numbers below are the
 test-set / validation metrics printed by each lesson's own `test.py` / training script.
-Detection lessons use 40,670 real COCO photographs as backgrounds.
+Detection lessons use real COCO photographs as backgrounds (downloaded separately —
+see the README's "Detection backgrounds (COCO)" section).
 
 ## Classification track
 
@@ -22,9 +23,9 @@ Lesson 03 deliberately trains on a small subset so the student can watch the
 train/val gap widen (`results.png` is the saved learning curve). Top confusions are
 4→9, 9→4, 8→5, 9→7 — the classic visually-similar MNIST pairs.
 
-Lesson 07 shows the two stages of transfer: a frozen head gets 80% fast (the head is
-under-trained in 3 epochs), then `finetune.py` unfreezes layer3/layer4 with a small
-backbone LR and reaches **95.77%** — clearly above training from scratch (92.78%).
+Lesson 07 shows the two stages of transfer learning: a frozen head gets 80% in
+minutes, then `finetune.py` unfreezes layer3/layer4 with a small backbone LR and
+reaches **95.77%** — clearly above training from scratch (92.78%).
 
 ## Lab A — CoordConv on classification (07x)
 
@@ -56,40 +57,16 @@ make localization and duplicate suppression harder — and motivates the later l
 | control | False | **72.77%** | **35.51%** | 726,213 |
 | CoordConv | True | **73.09%** | **35.90%** | 726,501 |
 
-With a fair initialization (the treatment shares the control's starting weights and
-only the two new coordinate channels are zero-initialized), coordinates give a small
-edge on this coordinate-dependent task (+0.3 / +0.4 points). The gap is within
-single-seed noise; run 2–3 seeds before treating it as a real effect.
-
-## Bugs found and fixed during this pass
-
-1. **Windows `DataLoader` infinite process spawn (critical).** The detection
-   `train.py` files (09/10/10x) ran the training loop at module top level with no
-   `if __name__ == '__main__'` guard. Windows uses `spawn`, so each `num_workers>0`
-   worker re-imports the module and re-launches training, producing
-   `RuntimeError: ... start a new process before the current process has finished its
-   bootstrapping phase`. Fixed by wrapping every detection script in a `main()` +
-   guard and making the loss/validate helpers parameterized functions.
-
-2. **Transfer learning gave a misleading result (lesson 07).** It resized CIFAR to
-   64px and used CIFAR normalization, yet the torchvision ImageNet ResNet-18 (7×7
-   stride-2 stem + maxpool) is built for 224px and ImageNet normalization. The
-   frozen backbone only reached **64%** — worse than the from-scratch net in lesson
-   06, teaching the opposite of the intended lesson. A frozen-feature probe at 224px
-   showed ~77% before any head training. Fixed by adding `norm='imagenet'` to
-   `common/data.py` and switching lesson 07 (train + inference) to 224px / ImageNet
-   normalization → **80.01%** with a frozen backbone in 3 epochs.
-
-3. **Confounded ablation (lesson 10x).** Adding coordinate channels changed the first
-   conv's shape and therefore shifted RNG initialization for every later layer, so
-   control and treatment were not a clean single-variable comparison. Fixed by seeding
-   the control base first, copying its shared weights into the treatment, and
-   zero-initializing only the two new channels.
+The control and treatment start from identical shared weights — only the two new
+coordinate channels differ (zero-initialized), so the comparison isolates that single
+variable. Coordinates give a small edge on this coordinate-dependent task
+(+0.3 / +0.4 points); the gap is within single-seed noise, so run 2–3 seeds before
+treating it as a real effect.
 
 ## Environment
 
 - GPU: NVIDIA RTX 4050 Laptop, 6 GB (WDDM), CUDA 12.4 build
 - Interpreter: Python 3.12, torch 2.5.1+cu124, torchvision 0.20.1+cu124,
   numpy 2.2.x, opencv 4.12
-- Reproduce a lesson: `cd <lesson> && python train.py`, then `python test.py`.
-  The 07x/10x labs use `--coords` to switch the treatment.
+- To reproduce: double-click the lesson's `train.py` (or `train_coords.py` for the
+  CoordConv treatment), then `test.py`.

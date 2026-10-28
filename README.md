@@ -19,6 +19,11 @@ Unlike traditional PyTorch courses, NoobTorch provides simple **click-to-run** c
 *At least you will no longer be afraid of it*  
 *And papers will no longer look like random chars*
 
+Despite the name, this course goes further than most PyTorch tutorials on the web:
+it starts at *"I'm afraid to even open a `.py` file"* and aims to leave you as an
+independent deep-learning developer — reading code, running your own experiments,
+and picking up new papers and architectures on your own.
+
 This course does **not** try to teach you everything. Deep learning moves too fast
 for any single course to cover. What it gives you is the habit and the foundation:
 read the code, understand how it works, run and see what happens. After that, a new
